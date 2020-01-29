@@ -19,6 +19,8 @@ const App = () => {
 
   // TODO: reorder sections
   const onDragEnd = result => {
+    console.log(result)
+
     /*
     Destination: Nueva posición (Ej: 1)
     Source: Posición inicial (Ej: 3)

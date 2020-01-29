@@ -12,25 +12,47 @@ const Wrapper = styled.div`
 const Title = styled.h3`
   padding: 8px;
   margin: 0;
+  height: 50px;
 `
 
 const List = styled.ul`
-  padding: 8px;
+  transition: opacity 0.3s, visibility 0.3s, height 0.3s;
+  height: auto;
+  padding: 0;
   margin: 0;
+  &.nope {
+    opacity: 0;
+    visibility: hidden;
+    height: 0;
+  }
+`
+
+const Container = styled.div`
+  background: ${props => (props.isDraggingOver ? "skyblue" : "white")};
 `
 
 export const Section = ({ section, tasks }) => {
   return (
     <Wrapper>
-      <Title>{section.title}</Title>
       <Droppable droppableId={section.id}>
-        {provided => (
-          <List {...provided.droppableProps} ref={provided.innerRef}>
-            {tasks.map((task, index) => (
-              <Task key={task.id} task={task} index={index} />
-            ))}
-            {provided.placeholder}
-          </List>
+        {(provided, snapshot) => (
+          <Container
+            {...provided.droppableProps}
+            ref={provided.innerRef}
+            isDraggingOver={snapshot.isDraggingOver}
+          >
+            <Title>{section.title}</Title>
+            <List
+              className="nope"
+              {...provided.droppableProps}
+              ref={provided.innerRef}
+            >
+              {tasks.map((task, index) => (
+                <Task key={task.id} task={task} index={index} />
+              ))}
+              {provided.placeholder}
+            </List>
+          </Container>
         )}
       </Droppable>
     </Wrapper>
